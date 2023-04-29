@@ -1,0 +1,23 @@
+
+RewriteMap map.legacy dbm:/etc/httpd/conf.d/redirectmap/web-301.map
+RewriteCond ${map.legacy:$1} !=""
+RewriteRule ^(.*)$ ${map.legacy:$1|/} [NE,L,R=301]
+
+RewriteMap map.legacy2 dbm:/etc/httpd/conf.d/redirectmap/web-302.map
+RewriteCond ${map.legacy2:$1} !=""
+RewriteRule ^(.*)$ ${map.legacy2:$1|/} [NE,L,R=302]
+
+
+RewriteRule ^(/)?sitemap.xml$ /content/web/en/index.sitemap.xml [PT,L]
+RewriteRule ^(/)?robots.txt$ /content/dam/web/robots.txt [PT,L]
+
+
+RewriteCond %{REQUEST_URI} !^/content/web
+RewriteCond %{REQUEST_URI} !^/content/experience-fragments
+RewriteCond %{REQUEST_URI} !^/bin
+RewriteCond %{REQUEST_URI} !^/etc
+RewriteCond %{REQUEST_URI} !^/content/dam
+RewriteCond %{REQUEST_URI} !^/libs
+RewriteCond %{REQUEST_URI} !^/dm
+RewriteCond %{REQUEST_URI} \.html$
+RewriteRule ^(/)?(.*)?$ /content/web/en/$2 [PT,L]

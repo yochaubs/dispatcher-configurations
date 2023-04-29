@@ -1,0 +1,6 @@
+##Any publish specific clientheaders go here
+"X-Forwarded-For"
+"CloudFront-Viewer-Country"
+"HTTP_HOST"
+"Access-Control-Allow-Origin"
+"Access-Control-Request-Method"

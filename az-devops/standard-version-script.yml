@@ -1,0 +1,24 @@
+parameters:
+  # Email address of user who push the bump version changes
+  - name: userEmail
+    type: string
+    default: "buildagent@programpandit.com"
+    # Username of user who push the bump version changes
+  - name: userName
+    type: string
+    default: "Build Agent"
+  - name: tagPrefix
+    type: string
+    default: ""
+
+steps:
+  # Script to bump the file and push bump version
+  - script: |
+      # release and push changelog
+      git config --global user.name "${{ parameters.userName }}"
+      git config --global user.email "${{ parameters.userEmail }}"
+      npm i -g standard-version
+      standard-version --tag-prefix=${{ parameters.tagPrefix }}
+      git push --follow-tags origin HEAD:$(Build.SourceBranch)
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main')) # this step will run for main branch only
+    displayName: "bump version"
