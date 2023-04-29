@@ -1,0 +1,25 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+  <id>distribution</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>${basedir}/src/httpd</directory>
+    <!--  <includes>
+        <include>**/*</include>
+      </includes> -->
+	<excludes>
+		<exclude>conf/**</exclude>
+    <exclude>tour/**</exclude>
+		<exclude>profile.d/**</exclude>
+		<exclude>sysconfig/**</exclude>
+    <exclude>conf.d/redirectmap/**</exclude>
+	</excludes>
+      <outputDirectory></outputDirectory>
+    </fileSet>
+  </fileSets>
+</assembly>

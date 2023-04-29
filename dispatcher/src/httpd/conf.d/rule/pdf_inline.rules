@@ -1,0 +1,16 @@
+
+<LocationMatch "\.(?i:pdf)$">
+	ForceType application/pdf
+	Header set Content-Disposition inline
+</LocationMatch>
+
+<LocationMatch "\.(?i:mp3)$">
+        ForceType audio/mpeg
+        Header set Content-Disposition inline
+</LocationMatch>
+
+
+<LocationMatch "\.(?i:svg)$">
+        ForceType image/svg+xml
+        Header set Content-Disposition inline
+</LocationMatch>

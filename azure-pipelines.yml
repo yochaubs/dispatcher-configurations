@@ -1,0 +1,102 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+ branches:
+  include:
+   - main
+   - feature/*
+
+
+pool: 'ubuntu-latest'
+
+
+variables:
+  - name: MAVEN_CACHE_FOLDER
+    value: $(Pipeline.Workspace)/.m2/repository
+  - name: MAVEN_OPTS
+    value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+
+stages:
+  - stage: Build
+    jobs:
+      - job:
+        steps:
+          - checkout: self
+            persistCredentials: true
+
+          - task: Cache@2
+            inputs:
+              key: '$(Build.SourcesDirectory)/dispatcher/assembly.xml'
+              path: '$(MAVEN_CACHE_FOLDER)'
+            displayName: Cache Maven local repo
+
+          - task: DownloadSecureFile@1
+            name: mavenSettings
+            inputs:
+              secureFile: 'settings.xml'
+              retryCount: '2'
+
+          - task: NodeTool@0
+            inputs:
+              versionSpec: "18.16.0"
+            displayName: "Install Node.js"
+
+          - template: ./az-devops/standard-version-script.yml
+
+          - task: Maven@3
+            inputs:
+              mavenPomFile: 'pom.xml'
+              mavenOptions: '$(MAVEN_OPTS)'
+              goals: 'clean install'
+              options: '--settings $(mavenSettings.secureFilePath)'
+              publishJUnitResults: false
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: 1.11
+              mavenVersionOption: 'Default'
+              mavenAuthenticateFeed: false
+              effectivePomSkip: false
+              sonarQubeRunAnalysis: false
+              sqMavenPluginVersionChoice: 'latest'
+              checkStyleRunAnalysis: true
+              pmdRunAnalysis: false
+              findBugsRunAnalysis: false
+            displayName: Assemble the configuation
+
+          #  Publish build artifacts
+          - template: ./az-devops/template-cpartifacts.yml
+            parameters:
+              artifactName: "Dispatcher"
+
+
+  - stage: DeployTest
+    dependsOn:
+      - Build
+    jobs:
+      - template: ./az-devops/template-dispatcher.yml
+        parameters:
+          sshDisp: "Dispatcher Test"
+          env: 'AEM-Test'
+
+  - stage: DeployStage
+    dependsOn:
+      - DeployTest
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - template: ./az-devops/template-dispatcher.yml
+        parameters:
+          sshDisp: "Dispatcher Stage"
+          env: 'DISPATCHER-PRE-PROD'
+
+
+  - stage: DeployProd
+    dependsOn:
+      - DeployStage
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - template: ./az-devops/template-dispatcher.yml
+        parameters:
+          sshDisp: "Dispatcher PROD"
+          env: 'DISPATCHER-PROD'

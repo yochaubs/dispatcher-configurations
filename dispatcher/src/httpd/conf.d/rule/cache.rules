@@ -1,0 +1,42 @@
+
+# BEGIN Expire headers
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 600 seconds"
+    ExpiresByType image/jpg "access 345600 seconds"
+    ExpiresByType image/jpeg "access 345600 seconds"
+    ExpiresByType image/png "access 345600 seconds"
+    ExpiresByType image/gif "access 345600 seconds"
+    ExpiresByType image/svg+xml "access 31536000 seconds"
+    AddType image/x-icon .ico
+    ExpiresByType image/ico "access 31536000 seconds"
+    ExpiresByType image/icon "access 31536000 seconds"
+    ExpiresByType image/x-icon "access 31536000 hours"
+    ExpiresByType text/css "access 2 hours"
+    ExpiresByType text/javascript "access 2 hours"
+    ExpiresByType application/xhtml+xml "access 24 hours"
+    ExpiresByType application/javascript "access 2 hours"
+    ExpiresByType application/x-javascript "access 2 hours"
+    ExpiresByType application/x-shockwave-flash "access 24 hours"
+    ExpiresByType font/woff "access 1 days"
+    ExpiresByType application/octet-stream "access 31536000 seconds"
+</IfModule>
+# END Expire headers
+
+# BEGIN Cache-Control Headers
+<IfModule mod_headers.c>
+ <filesMatch "\.(ico|jpe?g|png|gif|swf|gz|svg|woff|woff2|xls|xlsx|mp4)$">
+    Header set Cache-Control "max-age=43200, public"
+ </filesMatch>
+ <filesMatch "\.(js|css)$">
+    Header set Cache-Control "max-age=7200, public"
+ </filesMatch>
+ <filesMatch "\.(html)$">
+    Header set Cache-Control "max-age=600, must-revalidate"
+ </filesMatch>
+ # Disable caching for scripts and other dynamic files
+ <filesMatch "\.(pl|php|cgi|spl|scgi|fcgi|json)$">
+    Header unset Cache-Control
+ </filesMatch>
+</IfModule>
+# END Cache-Control Headers

@@ -1,0 +1,55 @@
+## deny everything and allow specific entries
+## Start with everything blocked as a safeguard and open things customers need and what's safe OOTB
+/0001 { /type "deny"  /url "*" }
+
+## Open consoles if this isn't a production environment by uncommenting the next few lines
+#/002 { /type "allow" /url "/crx/*"    }  ## allow content repository
+#/003 { /type "allow" /url "/system/*" }  ## allow OSGi console
+
+## allow non-public content directories if this isn't a production environment by uncommenting the next few lines
+#/004 { /type "allow" /url "/apps/*"   }  ## allow apps access
+#/005 { /type "allow" /url "/bin/*"    }  ## allow bin path access
+
+## This rule allows content to be access
+/0010 { /type "allow" /extension '(css|eot|gif|ico|jpeg|jpg|eps|js|gif|pdf|png|svg|swf|ttf|woff|woff2|html|JPG|mp3|wav|csv)' /path "/content/*" }  ## disable this rule to allow mapped content only
+
+## Enable specific mime types in non-public content directories
+/0011 { /type "allow" /method "GET" /extension '(css|eot|gif|ico|jpeg|jpg|js|gif|png|svg|swf|ttf|woff|woff2|otf|tif||mp4|JPG)' }
+
+## Enable clientlibs proxy servlet
+/0012 { /type "allow" /method "GET" /url "/etc.clientlibs/*" }
+
+## Enable basic features
+/0013 { /type "allow" /method "GET" /url '/libs/granite/csrf/token.json' /extension 'json' } ## AEM provides a framework aimed at preventing Cross-Site Request Forgery attacks
+/0014 { /type "allow" /method "POST" /url "/content/[.]*.form.html" }  ## allow POSTs to form selectors under content
+
+/0015 { /type "allow" /method "GET" /path "/libs/cq/personalization" }  ## enable personalization
+/0016 { /type "allow" /method "POST" /path "/content/[.]*.commerce.cart.json" }  ## allow POSTs to update the shopping cart
+/0022 { /type "allow" /method "GET" /url "/etc/designs/*/scripts.min.js.*" }  ## allow GET
+/0023 { /type "allow" /method "GET" /url "/*.xlsx" }  ## allow GET
+/0024 { /type "allow" /method "GET" /url "/*.pdf" }  ## allow GET
+/0025 { /type "allow" /method "GET" /url "/*.JPG" }  ## allow GET
+/0026 { /type "allow" /method "GET" /url "/*.jpg" }  ## allow GET
+/0027 { /type "allow" /method "GET" /url "/*.png" }  ## allow GET
+/0028 { /type "allow" /method "GET" /url "/*.jpeg" }  ## allow GET
+/0029 { /type "allow" /method "GET" /url "/*.JPEG" }  ## allow GET
+## Deny content grabbing for greedy queries and prevent un-intended self DOS attacks
+/0017 { /type "deny" /selectors '(feed|rss|pages|languages|blueprint|infinity|tidy|sysview|docview|query|[0-9-]+|jcr:content)' /extension '(json|xml|html|feed)' }
+
+## Deny authoring query params
+/0018 { /type "deny" /method "GET" /query "debug=*" }
+/0019 { /type "deny" /method "GET" /query "wcmmode=*" }
+#### Deny front door entry
+/0020 { /type "deny" /path "/content/ams/healthcheck/*"}
+/0021 { /type "deny" /url "/content/regent.html"}
+
+# Allow webchatsetting
+/0030 { /type "allow" /url "/etc/designs/web/clientlib-site/dist/webchat/webchatSettings.json"}
+
+## Allow i18n to load correctly
+/0032 { /type "allow" /glob "GET /libs/cq/i18n/dict.de.json *" }
+
+
+/0034 { /type "allow" /url "/etc/designs/dm/favicon/manifest.json"} ## allow manifest
+/0035  { /type "allow" /url "/etc/designs/dm/favicon/browserconfig.xml"} ## allow browserconfig
+

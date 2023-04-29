@@ -1,0 +1,9 @@
+
+/9001 { /type "allow" /url "/bin/web" } # allow access to the post servlets
+/9002 { /type "allow" /url "/content/dam*" } # allow access to the  Dam
+/9003 { /type "allow" /url "/content/web*" } # allow access to the  Content
+/9004 { /type "deny"  /url "/img/ag.jpg" }
+/9005 { /type "allow" /url "*jobexport.xml" }
+/9006 { /type "allow" /url "/*/contentgallery*.ajax.*.*.html"}
+/9007 { /type "allow" /url "/*/timetable*.ajax.json"}
+/9008 { /type "allow" /url "/servlets/*" }

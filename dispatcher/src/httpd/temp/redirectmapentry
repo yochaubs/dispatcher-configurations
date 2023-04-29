@@ -1,0 +1,2 @@
+/etc/httpd/conf.d/redirectmap/web-301.map.dir
+/etc/httpd/conf.d/redirectmap/web-302.map.dir

@@ -1,0 +1,21 @@
+# File: aem/template-mvn.yml
+parameters:
+  - name: artifactName
+    type: string
+
+steps:
+  # copy build artifacts into artifact staging directory
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: "$(system.defaultworkingdirectory)"
+      Contents: "**/target/*.zip"
+      TargetFolder: "$(build.artifactstagingdirectory)"
+      OverWrite: true
+    displayName: Copy file to $(build.artifactstagingdirectory)
+
+  # Publish build artifacts
+  - task: PublishBuildArtifacts@1
+    inputs:
+      ArtifactName: ${{parameters.artifactName}}
+      targetPath: "$(build.artifactstagingdirectory)"
+    displayName: Publish Artifacts drop
