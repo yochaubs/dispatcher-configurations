@@ -1,11 +1,11 @@
 
-RewriteMap map.legacy dbm:/etc/httpd/conf.d/redirectmap/web-301.map
-RewriteCond ${map.legacy:$1} !=""
-RewriteRule ^(.*)$ ${map.legacy:$1|/} [NE,L,R=301]
+RewriteMap map.web301 dbm:/etc/httpd/conf.d/redirectmap/web-301.map
+RewriteCond ${map.web301:$1} !=""
+RewriteRule ^(.*)$ ${map.web301:$1|/} [NE,L,R=301]
 
-RewriteMap map.legacy2 dbm:/etc/httpd/conf.d/redirectmap/web-302.map
-RewriteCond ${map.legacy2:$1} !=""
-RewriteRule ^(.*)$ ${map.legacy2:$1|/} [NE,L,R=302]
+RewriteMap map.web302 dbm:/etc/httpd/conf.d/redirectmap/web-302.map
+RewriteCond ${map.web302:$1} !=""
+RewriteRule ^(.*)$ ${map.web302:$1|/} [NE,L,R=302]
 
 
 RewriteRule ^(/)?sitemap.xml$ /content/web/en/index.sitemap.xml [PT,L]
