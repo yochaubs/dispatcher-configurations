@@ -9,8 +9,8 @@ trigger:
    - main
    - feature/*
 
-
-pool: 'ubuntu-latest'
+pool:
+ vmImage: 'ubuntu-latest'
 
 
 variables:
@@ -33,12 +33,6 @@ stages:
               path: '$(MAVEN_CACHE_FOLDER)'
             displayName: Cache Maven local repo
 
-          - task: DownloadSecureFile@1
-            name: mavenSettings
-            inputs:
-              secureFile: 'settings.xml'
-              retryCount: '2'
-
           - task: NodeTool@0
             inputs:
               versionSpec: "18.16.0"
@@ -51,7 +45,7 @@ stages:
               mavenPomFile: 'pom.xml'
               mavenOptions: '$(MAVEN_OPTS)'
               goals: 'clean install'
-              options: '--settings $(mavenSettings.secureFilePath)'
+              options: '--settings $(Build.SourcesDirectory)/settings.xml'
               publishJUnitResults: false
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: 1.11
@@ -71,32 +65,32 @@ stages:
               artifactName: "Dispatcher"
 
 
-  - stage: DeployTest
-    dependsOn:
-      - Build
-    jobs:
-      - template: ./az-devops/template-dispatcher.yml
-        parameters:
-          sshDisp: "Dispatcher Test"
-          env: 'AEM-Test'
+##  - stage: DeployTest
+##     dependsOn:
+##       - Build
+##     jobs:
+##       - template: ./az-devops/template-dispatcher.yml
+##         parameters:
+##           sshDisp: "Dispatcher Test"
+##           env: 'AEM-Test'
 
-  - stage: DeployStage
-    dependsOn:
-      - DeployTest
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-    jobs:
-      - template: ./az-devops/template-dispatcher.yml
-        parameters:
-          sshDisp: "Dispatcher Stage"
-          env: 'DISPATCHER-PRE-PROD'
+##   - stage: DeployStage
+##     dependsOn:
+##       - DeployTest
+##     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+##     jobs:
+##       - template: ./az-devops/template-dispatcher.yml
+##         parameters:
+##           sshDisp: "Dispatcher Stage"
+##           env: 'DISPATCHER-PRE-PROD'
 
 
-  - stage: DeployProd
-    dependsOn:
-      - DeployStage
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-    jobs:
-      - template: ./az-devops/template-dispatcher.yml
-        parameters:
-          sshDisp: "Dispatcher PROD"
-          env: 'DISPATCHER-PROD'
+##   - stage: DeployProd
+##     dependsOn:
+##       - DeployStage
+##     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+##     jobs:
+##       - template: ./az-devops/template-dispatcher.yml
+##         parameters:
+##           sshDisp: "Dispatcher PROD"
+##           env: 'DISPATCHER-PROD'
