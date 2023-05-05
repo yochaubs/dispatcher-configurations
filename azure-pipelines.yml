@@ -33,12 +33,6 @@ stages:
               path: '$(MAVEN_CACHE_FOLDER)'
             displayName: Cache Maven local repo
 
-          - task: DownloadSecureFile@1
-            name: mavenSettings
-            inputs:
-              secureFile: '$(Build.SourcesDirectory)/settings.xml'
-              retryCount: '2'
-
           - task: NodeTool@0
             inputs:
               versionSpec: "18.16.0"
@@ -51,7 +45,7 @@ stages:
               mavenPomFile: 'pom.xml'
               mavenOptions: '$(MAVEN_OPTS)'
               goals: 'clean install'
-              options: '--settings $(mavenSettings.secureFilePath)'
+              options: '--settings /settings.xml'
               publishJUnitResults: false
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: 1.11
