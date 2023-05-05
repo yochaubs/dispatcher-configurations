@@ -1,0 +1,8 @@
+{
+  "issuePrefixes": ["ISSUES-"],
+  "issueUrlFormat": "https://github.com/yochaubs/dispatcher-configurations/issues/{{id}}",
+  "commitUrlFormat": "https://github.com/yochaubs/dispatcher-configurations/commit/{{hash}}",
+  "compareUrlFormat": "https://github.com/yochaubs/dispatcher-configurations/compare/{{previousTag}}...{{currentTag}}",
+  "bumpFiles": [{ "filename": "pom.xml", "updater": "maven-version-updater.js" }],
+  "releaseCommitMessageFormat": "chore(release): {{currentTag}} [skip ci]"
+}
