@@ -65,32 +65,32 @@ stages:
               artifactName: "Dispatcher"
 
 
-  - stage: DeployTest
-    dependsOn:
-      - Build
-    jobs:
-      - template: ./az-devops/template-dispatcher.yml
-        parameters:
-          sshDisp: "Dispatcher Test"
-          env: 'AEM-Test'
+##  - stage: DeployTest
+##     dependsOn:
+##       - Build
+##     jobs:
+##       - template: ./az-devops/template-dispatcher.yml
+##         parameters:
+##           sshDisp: "Dispatcher Test"
+##           env: 'AEM-Test'
 
-  - stage: DeployStage
-    dependsOn:
-      - DeployTest
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-    jobs:
-      - template: ./az-devops/template-dispatcher.yml
-        parameters:
-          sshDisp: "Dispatcher Stage"
-          env: 'DISPATCHER-PRE-PROD'
+##   - stage: DeployStage
+##     dependsOn:
+##       - DeployTest
+##     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+##     jobs:
+##       - template: ./az-devops/template-dispatcher.yml
+##         parameters:
+##           sshDisp: "Dispatcher Stage"
+##           env: 'DISPATCHER-PRE-PROD'
 
 
-  - stage: DeployProd
-    dependsOn:
-      - DeployStage
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-    jobs:
-      - template: ./az-devops/template-dispatcher.yml
-        parameters:
-          sshDisp: "Dispatcher PROD"
-          env: 'DISPATCHER-PROD'
+##   - stage: DeployProd
+##     dependsOn:
+##       - DeployStage
+##     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+##     jobs:
+##       - template: ./az-devops/template-dispatcher.yml
+##         parameters:
+##           sshDisp: "Dispatcher PROD"
+##           env: 'DISPATCHER-PROD'
