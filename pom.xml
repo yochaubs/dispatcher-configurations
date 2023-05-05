@@ -29,7 +29,7 @@
     </modules>
 
     <properties>
-      <revision>1.0.0</revision>
+      <revision>1.0.1</revision>
       <aem.host>localhost</aem.host>
       <aem.port>4502</aem.port>
       <bnd.version>5.0.0</bnd.version>
