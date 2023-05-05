@@ -9,8 +9,8 @@ trigger:
    - main
    - feature/*
 
-
-pool: 'ubuntu-latest'
+pool:
+ vmImage: 'ubuntu-latest'
 
 
 variables:
