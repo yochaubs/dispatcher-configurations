@@ -45,7 +45,7 @@ stages:
               mavenPomFile: 'pom.xml'
               mavenOptions: '$(MAVEN_OPTS)'
               goals: 'clean install'
-              options: '--settings /settings.xml'
+              options: '--settings $(Build.SourcesDirectory)/settings.xml'
               publishJUnitResults: false
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: 1.11
