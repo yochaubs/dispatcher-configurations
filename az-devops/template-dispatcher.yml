@@ -7,7 +7,7 @@ parameters:
     default: "Dispatcher"
   - name: sshDisp
     type: string
-    default: "Dispatcher Test Primeforce"
+    default: "Dispatcher Test"
   - name: sshTimeout
     type: string
     default: "20000"
